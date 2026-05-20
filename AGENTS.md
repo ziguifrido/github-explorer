@@ -17,6 +17,12 @@ Always run `npm run lint` after making changes. No typecheck script is configure
 
 All UI text is in English.
 
+> **Troubleshooting:** if `npm run dev` fails with `Cannot find module '../server/require-hook'`, run:
+> ```bash
+> rm node_modules/.bin/next && ln -s ../next/dist/bin/next node_modules/.bin/next
+> ```
+> This fixes a Node.js 26 quirk where npm creates a regular file instead of a symlink for `.bin/next`.
+
 ## Docker
 
 ```bash
