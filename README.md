@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GitHub Explorer
 
-## Getting Started
+High-performance dashboard to explore GitHub profiles and repositories.
 
-First, run the development server:
+## Stack
+
+- **Framework:** Next.js 16 (App Router), React 19
+- **Language:** TypeScript 5
+- **Styling:** Tailwind CSS v4 + `tw-animate-css`
+- **UI:** Base UI React + custom components (shadcn-style)
+- **State:** Zustand v5 with local persistence
+- **Animations:** Framer Motion v12
+- **Charts:** Recharts v3 (language donut chart)
+- **Markdown:** react-markdown + remark-gfm
+- **PWA:** `@ducanh2912/next-pwa` (service worker, offline support)
+- **Icons:** Lucide React
+
+## Features
+
+- **Smart search** — auto-detects whether input is a user (`torvalds`) or repository (`facebook/react`)
+- **User dashboard** — full profile, aggregated stats (stars, forks), language distribution chart, repository list with search, language filter, sorting, and pagination
+- **Repository dashboard** — metadata, rendered README, commit timeline, contributors, language breakdown with percent bar
+- **Stack navigation** — "Back to User" button when navigating from profile to repository
+- **Persistent history** — last 10 queries saved to `localStorage`
+- **Skeleton loading** — loading states for user and repository dashboards
+- **PWA** — installable as standalone app, works offline (service worker caching)
+- **Dark theme** — zinc/violet/emerald palette, glassmorphism design
+
+## Prerequisites
+
+- Node.js 20+
+- (Optional) `NEXT_PUBLIC_GITHUB_TOKEN` in `.env.local` to increase GitHub API rate limit
+
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev        # development server (--webpack)
+npm run build      # production build (--webpack)
+npm run start      # start production server
+npm run lint       # run ESLint v9
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Docker
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Development (with hot reload)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker compose up --build
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000). The server auto-reloads on file changes.
 
-To learn more about Next.js, take a look at the following resources:
+### Production
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+docker build -t github-explorer .
+docker run -p 3000:3000 github-explorer
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Structure
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+.dockerignore
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+src/
+├── app/
+│   ├── layout.tsx        # root layout with Geist fonts, PWA metadata
+│   ├── page.tsx          # main page with view switching
+│   └── globals.css       # global styles + Tailwind v4
+├── components/
+│   ├── LayoutHeader.tsx   # sticky header with navigation
+│   ├── ViewSearch.tsx     # initial search screen
+│   ├── ViewUser.tsx       # user profile dashboard
+│   ├── ViewRepo.tsx       # repository dashboard
+│   ├── DashboardSkeletons.tsx
+│   └── ui/                # base components (shadcn-style)
+├── lib/
+│   ├── github.ts          # GitHub REST API client
+│   └── utils.ts           # cn() utility
+└── store/
+    └── useAppStore.ts     # global state (Zustand + persist)
+```
