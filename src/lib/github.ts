@@ -83,23 +83,16 @@ export interface GitHubReadme {
   download_url: string;
 }
 
-const getHeaders = (): HeadersInit => {
-  const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN || process.env.GITHUB_TOKEN;
-  const headers: HeadersInit = {
-    Accept: 'application/vnd.github.v3+json',
-  };
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-  return headers;
-};
-
-// Generic fetch function with error handling
+// Generic fetch function with error handling.
+// GitHub API access is proxied through a same-origin Route Handler so any
+// server-only token stays off the client bundle.
 async function githubFetch<T>(endpoint: string): Promise<T> {
-  const url = endpoint.startsWith('http') ? endpoint : `https://api.github.com${endpoint}`;
-  const response = await fetch(url, {
-    headers: getHeaders(),
-    next: { revalidate: 3600 }, // caching in nextjs if server side
+  if (!endpoint.startsWith('/')) {
+    throw new Error('Invalid GitHub API endpoint.');
+  }
+
+  const response = await fetch(`/api/github${endpoint}`, {
+    cache: 'no-store',
   });
 
   if (!response.ok) {
@@ -109,7 +102,7 @@ async function githubFetch<T>(endpoint: string): Promise<T> {
     if (response.status === 403) {
       const rateLimitRemaining = response.headers.get('x-ratelimit-remaining');
       if (rateLimitRemaining === '0') {
-        throw new Error('GitHub API rate limit exceeded. Please add a NEXT_PUBLIC_GITHUB_TOKEN.');
+        throw new Error('GitHub API rate limit exceeded. Please try again later.');
       }
     }
     throw new Error(`GitHub API error: ${response.statusText}`);
