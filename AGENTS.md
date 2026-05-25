@@ -17,6 +17,14 @@ Always run `npm run lint` after making changes. No typecheck script is configure
 
 All UI text is in English.
 
+## Node.js
+
+- **Required:** `>=22.0.0` (enforced via `package.json` `engines`)
+- **Recommended:** `22.14.x` (LTS, used in CI)
+- **Version files:** `.nvmrc` (nvm), `.node-version` (fnm/nodenv)
+- **Docker:** `node:22-alpine` (dev & production)
+- **Local:** Node.js 26 is known to work; run `nvm use` or `fnm use` to match CI.
+
 ## Theme system
 
 Uses CSS `light-dark()` function — no JavaScript FOUC script needed. Theme is
