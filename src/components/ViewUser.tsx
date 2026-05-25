@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useSyncExternalStore } from 'react';
+import Image from 'next/image';
 import { useAppStore } from '@/store/useAppStore';
 import { 
   Star, 
@@ -158,9 +159,12 @@ export const ViewUser = () => {
           </a>
         </div>
         <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 pt-8">
-          <img
+          <Image
             src={activeUser.avatar_url}
             alt={activeUser.name || activeUser.login}
+            width={112}
+            height={112}
+            priority
             className="w-24 h-24 md:w-28 md:h-28 rounded-full border-2 border-border shadow-xl shrink-0 object-cover"
           />
           <div className="flex-1 text-center md:text-left space-y-4">

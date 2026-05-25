@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import { useAppStore } from '@/store/useAppStore';
 import { 
   Star, 
@@ -271,10 +272,12 @@ export const ViewRepo = () => {
                           </p>
                           <div className="flex items-center gap-2">
                             {item.author && (
-                              <img 
+                              <Image 
                                 src={item.author.avatar_url} 
                                 alt={item.commit.author.name}
-                                className="w-5 h-5 rounded-full object-cover border border-border"
+                                width={20}
+                                height={20}
+                                className="w-5 h-5 rounded-full object-cover border border-border shrink-0"
                               />
                             )}
                             <span 
@@ -318,10 +321,12 @@ export const ViewRepo = () => {
                       onClick={() => selectUser(c.login)}
                       className="flex items-center gap-3 p-3 rounded-xl border border-border bg-secondary hover:bg-muted/40 hover:border-border transition-all duration-200 cursor-pointer group"
                     >
-                      <img 
+                      <Image 
                         src={c.avatar_url} 
                         alt={c.login}
-                        className="w-10 h-10 rounded-full object-cover border border-border"
+                        width={40}
+                        height={40}
+                        className="w-10 h-10 rounded-full object-cover border border-border shrink-0"
                       />
                       <div className="min-w-0">
                         <h4 className="text-xs font-semibold text-foreground group-hover:text-foreground truncate font-mono">
