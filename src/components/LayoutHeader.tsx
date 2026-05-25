@@ -5,6 +5,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, User } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/icons';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const LayoutHeader = () => {
@@ -48,6 +49,7 @@ export const LayoutHeader = () => {
 
         {/* Dynamic Navigation Actions */}
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <AnimatePresence mode="wait">
             {showHeaderNav && (
               <motion.div
