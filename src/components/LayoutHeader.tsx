@@ -4,7 +4,7 @@ import React from "react";
 import { useAppStore } from "@/store/useAppStore";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, User } from "lucide-react";
-import { GithubIcon } from "@/components/ui/icons";
+import { ExplorerIcon } from "@/components/ui/custom-icon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -44,7 +44,7 @@ export const LayoutHeader = () => {
           className="flex items-center gap-2 cursor-pointer group"
         >
           <div className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center group-hover:border-border transition-colors">
-            <GithubIcon className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+            <ExplorerIcon className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
           </div>
           <span className="font-semibold text-sm tracking-wide bg-gradient-to-r from-zinc-200 to-zinc-400 bg-clip-text text-transparent group-hover:from-white group-hover:to-zinc-200 transition-colors hidden sm:block">
             GitHub Explorer
