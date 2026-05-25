@@ -8,7 +8,6 @@ import {
   History, 
   Send, 
   AlertCircle, 
-  Sparkles, 
   CornerDownLeft,
   Compass
 } from 'lucide-react';
@@ -63,10 +62,6 @@ export const ViewSearch = () => {
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className="text-center space-y-4 mb-10 w-full"
       >
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-950/40 text-xs text-zinc-400 font-medium select-none">
-          <Sparkles className="w-3.5 h-3.5 text-yellow-500/80 animate-pulse" />
-          <span>GitHub API Explorer v2</span>
-        </div>
         
         <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-b from-white via-zinc-100 to-zinc-500 bg-clip-text text-transparent">
           Explore the GitHub Ecosystem
