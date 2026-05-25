@@ -17,6 +17,19 @@ Always run `npm run lint` after making changes. No typecheck script is configure
 
 All UI text is in English.
 
+## Theme system
+
+Uses CSS `light-dark()` function — no JavaScript FOUC script needed. Theme is
+controlled via `color-scheme` on `<html>` (set by `ThemeProvider` in
+`src/lib/theme.tsx`). User preference is persisted in a `theme` cookie (365 days).
+
+- Add new color variables using `light-dark(lightValue, darkValue)` in `:root`
+- Map them in `@theme inline` block to make Tailwind utilities available
+- `useTheme()` hook provides `{ theme, toggleTheme }`
+
+When working with `<Image />` from `next/image`, ensure the remote hostname is
+added to `images.remotePatterns` in `next.config.ts`.
+
 > **Troubleshooting:** if `npm run dev` fails with `Cannot find module '../server/require-hook'`, run:
 > ```bash
 > rm node_modules/.bin/next && ln -s ../next/dist/bin/next node_modules/.bin/next
