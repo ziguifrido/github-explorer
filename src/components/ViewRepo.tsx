@@ -10,9 +10,7 @@ import {
   Calendar, 
   FileText, 
   ExternalLink,
-  GitCommit,
-  Users,
-  Code
+  GitCommit
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -54,8 +52,6 @@ export const ViewRepo = () => {
     selectUser 
   } = useAppStore();
 
-  if (!activeRepo) return null;
-
   // 1. Languages breakdown
   const languageData = useMemo(() => {
     const totalBytes = Object.values(activeRepoLanguages).reduce((a, b) => a + b, 0);
@@ -69,6 +65,8 @@ export const ViewRepo = () => {
       }))
       .sort((a, b) => b.bytes - a.bytes);
   }, [activeRepoLanguages]);
+
+  if (!activeRepo) return null;
 
   // Date Format Helpers
   const createdDate = new Date(activeRepo.created_at).toLocaleDateString(undefined, {
@@ -254,7 +252,7 @@ export const ViewRepo = () => {
             <CardContent className="p-6 pt-0">
               {activeRepoCommits.length > 0 ? (
                 <div className="relative pl-6 border-l border-zinc-800 space-y-6">
-                  {activeRepoCommits.map((item, index) => {
+                  {activeRepoCommits.map((item) => {
                     const commitDate = new Date(item.commit.author.date).toLocaleDateString(undefined, {
                       month: 'short',
                       day: 'numeric',

@@ -230,10 +230,10 @@ export const useAppStore = create<AppStore>()(
               username: cleanQuery,
             });
           }
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error("Search error:", err);
           let userFriendlyMessage = "User or repository not found. Please check the spelling.";
-          if (err.message && err.message.includes('rate limit')) {
+          if (err instanceof Error && err.message.includes('rate limit')) {
             userFriendlyMessage = err.message;
           }
           set({ error: userFriendlyMessage });
@@ -257,7 +257,7 @@ export const useAppStore = create<AppStore>()(
             view: 'user',
             username,
           });
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error("Select user error:", err);
           set({ error: "Could not load user profile." });
         } finally {
@@ -290,7 +290,7 @@ export const useAppStore = create<AppStore>()(
             repoOwner: owner,
             repoName: name,
           });
-        } catch (err: any) {
+        } catch (err: unknown) {
           console.error("Select repo error:", err);
           set({ error: "Could not load repository details." });
         } finally {

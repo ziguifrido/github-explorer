@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo, useSyncExternalStore } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { 
   Star, 
@@ -22,7 +22,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { motion } from 'framer-motion';
 
 // Common GitHub language colors mapping
@@ -50,8 +50,7 @@ const DEFAULT_COLOR = '#8b5cf6'; // violet-500
 
 export const ViewUser = () => {
   const { activeUser, activeUserRepos, selectRepo, loading } = useAppStore();
-  const [mounted, setMounted] = useState(false);
-  
+
   // Filtering & Sorting State
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLang, setSelectedLang] = useState('All');
@@ -59,11 +58,11 @@ export const ViewUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!activeUser) return null;
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   // 1. Calculate cumulative metrics
   const totalStars = useMemo(() => {
@@ -87,7 +86,6 @@ export const ViewUser = () => {
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value);
 
-    // Group items beyond top 5 into "Others"
     if (sortedData.length > 5) {
       const top5 = sortedData.slice(0, 5);
       const othersCount = sortedData.slice(5).reduce((acc, curr) => acc + curr.value, 0);
@@ -109,34 +107,29 @@ export const ViewUser = () => {
 
   // 4. Filter & Sort Repositories
   const filteredAndSortedRepos = useMemo(() => {
-    let result = activeUserRepos.filter(repo => {
-      const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            (repo.description && repo.description.toLowerCase().includes(searchTerm.toLowerCase()));
-      const matchesLang = selectedLang === 'All' || repo.language === selectedLang;
-      return matchesSearch && matchesLang;
-    });
-
-    result.sort((a, b) => {
-      if (sortBy === 'stars') return b.stargazers_count - a.stargazers_count;
-      if (sortBy === 'forks') return b.forks_count - a.forks_count;
-      // Default / updated
-      return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-    });
-
-    return result;
+    return activeUserRepos
+      .filter(repo => {
+        const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              (repo.description && repo.description.toLowerCase().includes(searchTerm.toLowerCase()));
+        const matchesLang = selectedLang === 'All' || repo.language === selectedLang;
+        return matchesSearch && matchesLang;
+      })
+      .sort((a, b) => {
+        if (sortBy === 'stars') return b.stargazers_count - a.stargazers_count;
+        if (sortBy === 'forks') return b.forks_count - a.forks_count;
+        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+      });
   }, [activeUserRepos, searchTerm, selectedLang, sortBy]);
 
-  // 5. Pagination
-  const totalPages = Math.ceil(filteredAndSortedRepos.length / itemsPerPage);
+  // 5. Pagination with page clamping
+  const totalPages = Math.max(1, Math.ceil(filteredAndSortedRepos.length / itemsPerPage));
+  const safePage = Math.min(currentPage, totalPages);
   const paginatedRepos = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
+    const startIndex = (safePage - 1) * itemsPerPage;
     return filteredAndSortedRepos.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredAndSortedRepos, currentPage]);
+  }, [filteredAndSortedRepos, safePage]);
 
-  // Reset page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, selectedLang, sortBy]);
+  if (!activeUser) return null;
 
   const formattedDate = new Date(activeUser.created_at).toLocaleDateString(undefined, {
     year: 'numeric',
@@ -339,7 +332,7 @@ export const ViewUser = () => {
                 
                 {/* Render custom legend for better design */}
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-1.5 mt-2 max-w-xs text-[11px] text-zinc-400">
-                  {chartData.map((item, index) => (
+                  {chartData.map((item) => (
                     <div key={item.name} className="flex items-center gap-1">
                       <span
                         className="w-2 h-2 rounded-full"
@@ -402,7 +395,7 @@ export const ViewUser = () => {
               <div className="relative">
                 <select
                   value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
+                   onChange={(e) => setSortBy(e.target.value as 'stars' | 'forks' | 'updated')}
                   className="appearance-none h-9 border border-zinc-800 bg-zinc-950/40 text-xs rounded-lg px-3 pr-8 text-zinc-300 outline-none hover:border-zinc-700 focus:border-zinc-600 transition-all cursor-pointer font-sans"
                 >
                   <option value="updated" className="bg-zinc-950 text-zinc-300">Updated</option>

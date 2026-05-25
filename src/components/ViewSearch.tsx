@@ -5,13 +5,11 @@ import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { 
-  Search, 
   History, 
   Send, 
   AlertCircle, 
   Sparkles, 
   CornerDownLeft,
-  X,
   Compass
 } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/icons';

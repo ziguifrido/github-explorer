@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useAppStore, NavigationStep } from '@/store/useAppStore';
+import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Search, User } from 'lucide-react';
+import { ArrowLeft, User } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
