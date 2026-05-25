@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useSyncExternalStore, useEffect, ReactNode } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -25,38 +25,42 @@ function getCookie(name: string): string | undefined {
 
 function setCookie(name: string, value: string, days = 365) {
   document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${days * 86400}; SameSite=Lax`;
+  window.dispatchEvent(new CustomEvent('themechange'));
 }
 
-function getInitialTheme(): Theme {
-  if (typeof document === 'undefined') return 'dark';
-  return document.documentElement.classList.contains('light') ? 'light' : 'dark';
+function subscribeToThemeChange(callback: () => void) {
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  mq.addEventListener('change', callback);
+  window.addEventListener('themechange', callback);
+  return () => {
+    mq.removeEventListener('change', callback);
+    window.removeEventListener('themechange', callback);
+  };
+}
+
+function getSnapshot(): Theme {
+  const stored = getCookie('theme');
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+function getServerSnapshot(): Theme {
+  return 'dark';
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const theme = useSyncExternalStore(subscribeToThemeChange, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
+    document.documentElement.style.colorScheme = theme;
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
-    document.documentElement.style.colorScheme = theme;
   }, [theme]);
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
     setCookie('theme', next);
   };
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const handler = (e: MediaQueryListEvent) => {
-      if (!getCookie('theme')) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
-    };
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
