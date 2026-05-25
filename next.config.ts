@@ -1,5 +1,3 @@
-const nextConfig = {
-  output: "standalone" as const,
-};
+const nextConfig = {};
 
 export default nextConfig;
