@@ -25,8 +25,10 @@
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
+  --color-tertiary: var(--tertiary);
   --color-input: var(--input);
   --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
@@ -84,6 +86,8 @@
   --sidebar-ring: #0969da;
   --selection-bg: #0969da;
   --selection-text: #ffffff;
+  --tertiary: #636e7b;
+  --border-subtle: #e8ecef;
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(0, 0, 0, 0.06);
   --glass-card-bg: rgba(246, 248, 250, 0.6);
@@ -129,6 +133,8 @@
   --sidebar-ring: #58a6ff;
   --selection-bg: #58a6ff;
   --selection-text: #ffffff;
+  --tertiary: #8b949e;
+  --border-subtle: #21262d;
   --glass-bg: rgba(9, 9, 11, 0.7);
   --glass-border: rgba(255, 255, 255, 0.05);
   --glass-card-bg: rgba(24, 24, 27, 0.4);

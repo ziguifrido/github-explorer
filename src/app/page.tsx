@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useAppStore } from '@/store/useAppStore';
-import { LayoutHeader } from '@/components/LayoutHeader';
-import { ViewSearch } from '@/components/ViewSearch';
-import { ViewUser } from '@/components/ViewUser';
-import { ViewRepo } from '@/components/ViewRepo';
-import { UserDashboardSkeleton, RepoDashboardSkeleton } from '@/components/DashboardSkeletons';
-import { GithubIcon } from '@/components/ui/icons';
-import { AnimatePresence, motion } from 'framer-motion';
+import React from "react";
+import { useAppStore } from "@/store/useAppStore";
+import { LayoutHeader } from "@/components/LayoutHeader";
+import { ViewSearch } from "@/components/ViewSearch";
+import { ViewUser } from "@/components/ViewUser";
+import { ViewRepo } from "@/components/ViewRepo";
+import {
+  UserDashboardSkeleton,
+  RepoDashboardSkeleton,
+} from "@/components/DashboardSkeletons";
+import { GithubIcon } from "@/components/ui/icons";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function Home() {
   const { view, loading, loadingType } = useAppStore();
@@ -16,18 +19,18 @@ export default function Home() {
   // Determine what content to show based on loading and view state
   const renderContent = () => {
     if (loading) {
-      if (loadingType === 'repo') {
+      if (loadingType === "repo") {
         return <RepoDashboardSkeleton key="repo-skeleton" />;
       }
       return <UserDashboardSkeleton key="user-skeleton" />;
     }
 
     switch (view) {
-      case 'user':
+      case "user":
         return <ViewUser key="user-view" />;
-      case 'repo':
+      case "repo":
         return <ViewRepo key="repo-view" />;
-      case 'search':
+      case "search":
       default:
         return <ViewSearch key="search-view" />;
     }
@@ -50,7 +53,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
             className="flex-1 flex flex-col w-full h-full"
           >
             {renderContent()}
@@ -74,7 +77,7 @@ export default function Home() {
           </span>
           <span className="flex items-center gap-3">
             <a
-              href="https://github.com/ziguifrido/github-explorer-dashboard"
+              href="https://github.com/ziguifrido/github-explorer"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-zinc-500 hover:text-zinc-300 transition-colors"

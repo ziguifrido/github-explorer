@@ -39,8 +39,8 @@ export const LayoutHeader = () => {
           onClick={resetToSearch}
           className="flex items-center gap-2 cursor-pointer group"
         >
-          <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-zinc-700 transition-colors">
-            <GithubIcon className="w-4 h-4 text-zinc-400 group-hover:text-zinc-100 transition-colors" />
+          <div className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center group-hover:border-border transition-colors">
+            <GithubIcon className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
           </div>
           <span className="font-semibold text-sm tracking-wide bg-gradient-to-r from-zinc-200 to-zinc-400 bg-clip-text text-transparent group-hover:from-white group-hover:to-zinc-200 transition-colors hidden sm:block">
             GitHub Explorer
@@ -65,7 +65,7 @@ export const LayoutHeader = () => {
                     variant="outline"
                     size="sm"
                     onClick={popNavigation}
-                    className="border-zinc-800 bg-zinc-950/40 hover:bg-zinc-900 text-zinc-300 hover:text-zinc-100 text-xs gap-1.5 cursor-pointer h-9 px-3"
+                    className="border-border bg-secondary hover:bg-accent text-foreground hover:text-foreground text-xs gap-1.5 cursor-pointer h-9 px-3"
                   >
                     <User className="w-3.5 h-3.5" />
                     <span className="hidden md:inline">Back to User</span>
@@ -78,7 +78,7 @@ export const LayoutHeader = () => {
                   variant="default"
                   size="sm"
                   onClick={resetToSearch}
-                  className="bg-zinc-100 hover:bg-white text-zinc-950 text-xs gap-1.5 cursor-pointer font-medium h-9 px-3 shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
+                  className="bg-primary hover:bg-white text-primary-foreground text-xs gap-1.5 cursor-pointer font-medium h-9 px-3 shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Back to Search</span>
