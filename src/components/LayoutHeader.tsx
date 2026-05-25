@@ -1,42 +1,46 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useAppStore } from '@/store/useAppStore';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, User } from 'lucide-react';
-import { GithubIcon } from '@/components/ui/icons';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from "react";
+import { useAppStore } from "@/store/useAppStore";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, User } from "lucide-react";
+import { GithubIcon } from "@/components/ui/icons";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const LayoutHeader = () => {
-  const { view, navigationStack, popNavigation } = useAppStore();
+  const { view, navigationStack, popNavigation, search } = useAppStore();
+
+  const goToProjectRepo = () => {
+    search("ziguifrido/github-explorer");
+  };
 
   const resetToSearch = () => {
     useAppStore.setState({
-      navigationStack: [{ view: 'search' }],
-      view: 'search',
-      username: '',
-      repoOwner: '',
-      repoName: '',
+      navigationStack: [{ view: "search" }],
+      view: "search",
+      username: "",
+      repoOwner: "",
+      repoName: "",
       error: null,
     });
   };
 
   // Check if we came from a User dashboard to the Repository dashboard
   const hasUserInStack = React.useMemo(() => {
-    if (view !== 'repo') return false;
+    if (view !== "repo") return false;
     // Look backward in the stack to find if there is a 'user' view before the current 'repo' view
-    return navigationStack.some(step => step.view === 'user');
+    return navigationStack.some((step) => step.view === "user");
   }, [view, navigationStack]);
 
-  const showHeaderNav = view !== 'search';
+  const showHeaderNav = view !== "search";
 
   return (
     <header className="sticky top-0 z-50 w-full glass-header backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo / Title */}
-        <div 
-          onClick={resetToSearch}
+        <div
+          onClick={goToProjectRepo}
           className="flex items-center gap-2 cursor-pointer group"
         >
           <div className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center group-hover:border-border transition-colors">
@@ -78,7 +82,7 @@ export const LayoutHeader = () => {
                   variant="default"
                   size="sm"
                   onClick={resetToSearch}
-                  className="bg-primary hover:bg-white text-primary-foreground text-xs gap-1.5 cursor-pointer font-medium h-9 px-3 shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
+                  className="bg-primary hover:bg-primary/80 text-primary-foreground text-xs gap-1.5 cursor-pointer font-medium h-9 px-3 shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Back to Search</span>

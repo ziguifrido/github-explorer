@@ -10,7 +10,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="w-8 h-8 rounded-lg border border-zinc-800 bg-zinc-950/40 hover:bg-zinc-900 hover:border-zinc-700 flex items-center justify-center transition-all cursor-pointer"
+      className="w-8 h-8 rounded-lg border border-border bg-secondary hover:bg-accent hover:border-ring flex items-center justify-center transition-all cursor-pointer"
       title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <motion.div
@@ -20,9 +20,9 @@ export function ThemeToggle() {
         transition={{ duration: 0.2 }}
       >
         {theme === 'dark' ? (
-          <Sun className="w-3.5 h-3.5 text-zinc-400 hover:text-zinc-100 transition-colors" />
+          <Sun className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
         ) : (
-          <Moon className="w-3.5 h-3.5 text-zinc-400 hover:text-zinc-100 transition-colors" />
+          <Moon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
         )}
       </motion.div>
     </button>
