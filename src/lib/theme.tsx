@@ -27,15 +27,9 @@ function setCookie(name: string, value: string, days = 365) {
   document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=${days * 86400}; SameSite=Lax`;
 }
 
-function getSystemTheme(): Theme {
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-}
-
 function getInitialTheme(): Theme {
   if (typeof document === 'undefined') return 'dark';
-  const stored = getCookie('theme');
-  if (stored === 'light' || stored === 'dark') return stored;
-  return getSystemTheme();
+  return document.documentElement.classList.contains('light') ? 'light' : 'dark';
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
