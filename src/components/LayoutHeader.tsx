@@ -48,16 +48,6 @@ export const LayoutHeader = () => {
 
         {/* Dynamic Navigation Actions */}
         <div className="flex items-center gap-2">
-          <a
-            href="https://github.com/ziguifrido/github-explorer-dashboard"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded-lg border border-zinc-800 bg-zinc-950/40 hover:bg-zinc-900 hover:border-zinc-700 text-xs text-zinc-500 hover:text-zinc-300 transition-all"
-          >
-            <GithubIcon className="w-4 h-4" />
-            <span>Reposit&oacute;rio</span>
-          </a>
-          
           <AnimatePresence mode="wait">
             {showHeaderNav && (
               <motion.div

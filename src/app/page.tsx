@@ -7,6 +7,7 @@ import { ViewSearch } from '@/components/ViewSearch';
 import { ViewUser } from '@/components/ViewUser';
 import { ViewRepo } from '@/components/ViewRepo';
 import { UserDashboardSkeleton, RepoDashboardSkeleton } from '@/components/DashboardSkeletons';
+import { GithubIcon } from '@/components/ui/icons';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Home() {
@@ -71,8 +72,18 @@ export default function Home() {
             </a>
             &nbsp;&copy; {new Date().getFullYear()}
           </span>
-          <span className="flex items-center gap-1.5">
-            Built with Next.js 16, Tailwind v4 &amp; Base UI
+          <span className="flex items-center gap-3">
+            <a
+              href="https://github.com/ziguifrido/github-explorer-dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              <GithubIcon className="w-3.5 h-3.5" />
+              Repository
+            </a>
+            <span className="text-zinc-700">|</span>
+            <span>Built with Next.js 16, Tailwind v4 &amp; Base UI</span>
           </span>
         </div>
       </footer>
