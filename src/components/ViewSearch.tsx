@@ -11,6 +11,7 @@ import {
   CornerDownLeft,
   Compass
 } from 'lucide-react';
+import { ExplorerIcon } from '@/components/ui/custom-icon';
 import { GithubIcon } from '@/components/ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -63,11 +64,16 @@ export const ViewSearch = () => {
         className="text-center space-y-4 mb-10 w-full"
       >
         
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-b from-white via-primary to-tertiary bg-clip-text text-transparent">
-          Explore the GitHub Ecosystem
-        </h1>
+        <div className="flex items-center justify-center gap-3 md:gap-4 mb-3">
+          <div className="w-10 h-10 md:w-14 md:h-14 rounded-xl bg-muted border border-border flex items-center justify-center">
+            <ExplorerIcon className="w-5 h-5 md:w-7 md:h-7 text-foreground" />
+          </div>
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight bg-gradient-to-b from-white via-primary to-tertiary bg-clip-text text-transparent">
+            GitHub Explorer
+          </h1>
+        </div>
         <p className="text-sm md:text-base text-muted-foreground max-w-lg mx-auto leading-relaxed">
-          Search profiles, languages, and full repository details in an immersive, high-performance interface.
+          Explore the GitHub Ecosystem
         </p>
       </motion.div>
 
