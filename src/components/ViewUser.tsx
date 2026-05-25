@@ -414,49 +414,49 @@ export const ViewUser = () => {
                 <Card
                   key={repo.id}
                   onClick={() => selectRepo(repo.owner.login, repo.name)}
-                  className="glass-card border-border cursor-pointer flex flex-col justify-between"
+                  className="glass-card border-border cursor-pointer flex flex-col justify-between group"
                 >
-                  <CardHeader className="p-5 pb-3">
+                  <CardHeader className="p-4 pb-0">
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="text-sm font-bold tracking-tight text-foreground truncate hover:text-foreground hover:underline transition-colors font-mono">
+                      <h4 className="text-sm font-bold tracking-tight text-foreground truncate group-hover:text-foreground transition-colors font-mono">
                         {repo.name}
                       </h4>
                       {repo.fork && (
-                        <Badge variant="secondary" className="border border-border bg-muted/50 text-[10px] text-tertiary py-0.5 px-1.5 rounded-md">
+                        <Badge variant="secondary" className="border border-border bg-muted text-[10px] text-tertiary py-0.5 px-1.5 rounded-md shrink-0">
                           Fork
                         </Badge>
                       )}
                     </div>
                     {repo.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-2 mt-2 leading-relaxed h-8">
+                      <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5 leading-relaxed">
                         {repo.description}
                       </p>
                     )}
                   </CardHeader>
-                  <CardContent className="p-5 pt-0 flex items-center justify-between border-t border-subtle mt-auto">
+                  <CardContent className="p-4 pt-3 flex items-center justify-between gap-2 mt-auto">
                     {/* Language dot */}
-                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1.5 min-w-0 text-xs text-muted-foreground">
                       {repo.language ? (
                         <>
                           <span
-                            className="w-2.5 h-2.5 rounded-full shrink-0"
+                            className="w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-border"
                             style={{ backgroundColor: LANGUAGE_COLORS[repo.language] || DEFAULT_COLOR }}
                           />
-                          <span>{repo.language}</span>
+                          <span className="truncate">{repo.language}</span>
                         </>
                       ) : (
-                        <span>No language</span>
+                        <span className="text-tertiary">No language</span>
                       )}
                     </div>
 
                     {/* Stats counters */}
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground font-mono">
-                      <span className="flex items-center gap-1">
-                        <Star className="w-3.5 h-3.5 text-tertiary fill-zinc-500/10" />
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono shrink-0">
+                      <span className="flex items-center gap-1 hover:text-foreground transition-colors">
+                        <Star className="w-3.5 h-3.5 text-amber-500/70" />
                         {repo.stargazers_count}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <GitFork className="w-3.5 h-3.5 text-tertiary" />
+                      <span className="flex items-center gap-1 hover:text-foreground transition-colors">
+                        <GitFork className="w-3.5 h-3.5 text-muted-foreground" />
                         {repo.forks_count}
                       </span>
                     </div>
