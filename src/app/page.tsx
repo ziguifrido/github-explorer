@@ -60,7 +60,17 @@ export default function Home() {
       {/* Modern Minimalist Footer */}
       <footer className="py-6 border-t border-zinc-900 text-center text-xs text-zinc-600 select-none">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>GitHub Explorer &copy; {new Date().getFullYear()}</span>
+          <span>
+            &copy; {new Date().getFullYear()}{' '}
+            <a
+              href="https://marcosoliveira.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              Marcos Oliveira
+            </a>
+          </span>
           <span className="flex items-center gap-1.5">
             Built with Next.js 16, Tailwind v4 &amp; Base UI
           </span>

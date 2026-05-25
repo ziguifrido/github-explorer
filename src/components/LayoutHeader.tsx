@@ -3,7 +3,7 @@
 import React from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, User } from 'lucide-react';
+import { ArrowLeft, User, ExternalLink } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -47,7 +47,17 @@ export const LayoutHeader = () => {
         </div>
 
         {/* Dynamic Navigation Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <a
+            href="https://github.com/ziguifrido/github-explorer-dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-8 h-8 rounded-lg border border-zinc-800 bg-zinc-950/40 hover:bg-zinc-900 hover:border-zinc-700 flex items-center justify-center transition-all group"
+            title="View source on GitHub"
+          >
+            <ExternalLink className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
+          </a>
+          
           <AnimatePresence mode="wait">
             {showHeaderNav && (
               <motion.div
