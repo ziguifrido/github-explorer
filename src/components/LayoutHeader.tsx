@@ -3,7 +3,7 @@
 import React from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, User, ExternalLink } from 'lucide-react';
+import { ArrowLeft, User } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -52,10 +52,10 @@ export const LayoutHeader = () => {
             href="https://github.com/ziguifrido/github-explorer-dashboard"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-8 h-8 rounded-lg border border-zinc-800 bg-zinc-950/40 hover:bg-zinc-900 hover:border-zinc-700 flex items-center justify-center transition-all group"
-            title="View source on GitHub"
+            className="hidden sm:inline-flex items-center gap-1.5 h-8 px-3 rounded-lg border border-zinc-800 bg-zinc-950/40 hover:bg-zinc-900 hover:border-zinc-700 text-xs text-zinc-500 hover:text-zinc-300 transition-all"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-zinc-500 group-hover:text-zinc-300 transition-colors" />
+            <GithubIcon className="w-4 h-4" />
+            <span>Reposit&oacute;rio</span>
           </a>
           
           <AnimatePresence mode="wait">
