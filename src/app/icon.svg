@@ -1,7 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <circle cx="14" cy="14" r="9" stroke="#e6edf3" stroke-width="2"/>
-  <line x1="20.5" y1="20.5" x2="28" y2="28" stroke="#e6edf3" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M12 11l2-4 2 4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M10 15h8" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round"/>
-  <path d="M12 19l2 4 2-4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="16" cy="14" r="10" stroke="#e6edf3" stroke-width="2"/>
+  <circle cx="16" cy="14" r="9" stroke="#e6edf3" stroke-width="0.5" stroke-opacity="0.3"/>
+  <line x1="23.5" y1="21.5" x2="29" y2="28" stroke="#e6edf3" stroke-width="2.5" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58a6ff" />
+      <stop offset="100%" stop-color="#3fb950" />
+    </linearGradient>
+  </defs>
+  <path d="M15 10l-5 4 5 4" stroke="url(#grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="19" y1="7" x2="13" y2="21" stroke="url(#grad)" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M17 10l5 4-5 4" stroke="url(#grad)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

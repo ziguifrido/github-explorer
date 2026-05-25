@@ -1,18 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0d1117" />
       <stop offset="100%" stop-color="#161b22" />
     </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="symbol-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#58a6ff" />
       <stop offset="100%" stop-color="#3fb950" />
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="128" fill="url(#bg)" />
-  <circle cx="220" cy="220" r="130" stroke="#e6edf3" stroke-width="24"/>
-  <line x1="312" y1="312" x2="400" y2="400" stroke="#e6edf3" stroke-width="32" stroke-linecap="round"/>
-  <path d="M185 180l35-60 35 60" stroke="url(#accent)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M155 235h130" stroke="url(#accent)" stroke-width="20" stroke-linecap="round"/>
-  <path d="M185 290l35 60 35-60" stroke="url(#accent)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect width="192" height="192" rx="48" fill="url(#bg-grad)"/>
+  
+  <!-- Scale 6x from 32x32 design -->
+  <circle cx="96" cy="84" r="60" stroke="#e6edf3" stroke-width="12"/>
+  <circle cx="96" cy="84" r="54" stroke="#e6edf3" stroke-width="3" stroke-opacity="0.3"/>
+  <line x1="141" y1="129" x2="174" y2="168" stroke="#e6edf3" stroke-width="15" stroke-linecap="round"/>
+  
+  <path d="M90 60l-30 24 30 24" stroke="url(#symbol-grad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="114" y1="42" x2="78" y2="126" stroke="url(#symbol-grad)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M102 60l30 24-30 24" stroke="url(#symbol-grad)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

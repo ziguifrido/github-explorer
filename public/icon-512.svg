@@ -1,18 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0d1117" />
       <stop offset="100%" stop-color="#161b22" />
     </linearGradient>
-    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="symbol-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#58a6ff" />
       <stop offset="100%" stop-color="#3fb950" />
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="128" fill="url(#bg)" />
-  <circle cx="220" cy="220" r="130" stroke="#e6edf3" stroke-width="24"/>
-  <line x1="312" y1="312" x2="400" y2="400" stroke="#e6edf3" stroke-width="32" stroke-linecap="round"/>
-  <path d="M185 180l35-60 35 60" stroke="url(#accent)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M155 235h130" stroke="url(#accent)" stroke-width="20" stroke-linecap="round"/>
-  <path d="M185 290l35 60 35-60" stroke="url(#accent)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect width="512" height="512" rx="128" fill="url(#bg-grad)"/>
+  
+  <!-- Scale 16x from 32x32 design -->
+  <circle cx="256" cy="224" r="160" stroke="#e6edf3" stroke-width="32"/>
+  <circle cx="256" cy="224" r="144" stroke="#e6edf3" stroke-width="8" stroke-opacity="0.3"/>
+  <line x1="376" y1="344" x2="464" y2="448" stroke="#e6edf3" stroke-width="40" stroke-linecap="round"/>
+  
+  <path d="M240 160l-80 64 80 64" stroke="url(#symbol-grad)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="304" y1="112" x2="208" y2="336" stroke="url(#symbol-grad)" stroke-width="24" stroke-linecap="round"/>
+  <path d="M272 160l80 64-80 64" stroke="url(#symbol-grad)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
