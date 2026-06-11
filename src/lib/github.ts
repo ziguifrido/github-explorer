@@ -83,6 +83,36 @@ export interface GitHubReadme {
   download_url: string;
 }
 
+export interface GitHubSearchUser {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+  type: string;
+  score: number;
+}
+
+export interface GitHubSearchUsersResponse {
+  total_count: number;
+  incomplete_results: boolean;
+  items: GitHubSearchUser[];
+}
+
+export interface GitHubSearchReposResponse {
+  total_count: number;
+  incomplete_results: boolean;
+  items: GitHubRepository[];
+}
+
+interface GitHubSearchResponse<T> {
+  total_count: number;
+  incomplete_results: boolean;
+  items: T[];
+}
+
+const GITHUB_SEARCH_PAGE_SIZE = 100;
+const GITHUB_SEARCH_RESULT_LIMIT = 1000;
+
 // Generic fetch function with error handling.
 // GitHub API access is proxied through a same-origin Route Handler so any
 // server-only token stays off the client bundle.
@@ -109,6 +139,36 @@ async function githubFetch<T>(endpoint: string): Promise<T> {
   }
 
   return response.json();
+}
+
+async function searchAllPages<T>(
+  endpoint: string,
+  queryParams: URLSearchParams
+): Promise<GitHubSearchResponse<T>> {
+  queryParams.set('per_page', String(GITHUB_SEARCH_PAGE_SIZE));
+  queryParams.set('page', '1');
+
+  const firstPage = await githubFetch<GitHubSearchResponse<T>>(`${endpoint}?${queryParams.toString()}`);
+  const resultLimit = Math.min(firstPage.total_count, GITHUB_SEARCH_RESULT_LIMIT);
+  const totalPages = Math.ceil(resultLimit / GITHUB_SEARCH_PAGE_SIZE);
+
+  if (totalPages <= 1) {
+    return firstPage;
+  }
+
+  const remainingPages = await Promise.all(
+    Array.from({ length: totalPages - 1 }, async (_, index) => {
+      const pageParams = new URLSearchParams(queryParams);
+      pageParams.set('page', String(index + 2));
+      return githubFetch<GitHubSearchResponse<T>>(`${endpoint}?${pageParams.toString()}`);
+    })
+  );
+
+  return {
+    total_count: firstPage.total_count,
+    incomplete_results: [firstPage, ...remainingPages].some((page) => page.incomplete_results),
+    items: [firstPage, ...remainingPages].flatMap((page) => page.items).slice(0, resultLimit),
+  };
 }
 
 export const githubApi = {
@@ -138,5 +198,23 @@ export const githubApi = {
 
   getRepoLanguages: async (owner: string, repo: string): Promise<Record<string, number>> => {
     return githubFetch<Record<string, number>>(`/repos/${owner}/${repo}/languages`);
+  },
+
+  searchUsers: async (query: string): Promise<GitHubSearchUsersResponse> => {
+    return searchAllPages<GitHubSearchUser>(
+      '/search/users',
+      new URLSearchParams({ q: query })
+    );
+  },
+
+  searchRepositories: async (query: string): Promise<GitHubSearchReposResponse> => {
+    return searchAllPages<GitHubRepository>(
+      '/search/repositories',
+      new URLSearchParams({
+        q: query,
+        sort: 'stars',
+        order: 'desc',
+      })
+    );
   },
 };
