@@ -92,22 +92,17 @@ export interface GitHubSearchUser {
   score: number;
 }
 
-export interface GitHubSearchUsersResponse {
-  total_count: number;
-  incomplete_results: boolean;
-  items: GitHubSearchUser[];
-}
+export type GitHubSearchUsersResponse = GitHubSearchResponse<GitHubSearchUser>;
+export type GitHubSearchReposResponse = GitHubSearchResponse<GitHubRepository>;
 
-export interface GitHubSearchReposResponse {
-  total_count: number;
-  incomplete_results: boolean;
-  items: GitHubRepository[];
-}
-
-interface GitHubSearchResponse<T> {
+export interface GitHubSearchResponse<T> {
   total_count: number;
   incomplete_results: boolean;
   items: T[];
+  page: number;
+  total_pages: number;
+  next_page: number | null;
+  prev_page: number | null;
 }
 
 const GITHUB_SEARCH_PAGE_SIZE = 100;
@@ -141,33 +136,63 @@ async function githubFetch<T>(endpoint: string): Promise<T> {
   return response.json();
 }
 
-async function searchAllPages<T>(
+async function searchFirstPage<T>(
   endpoint: string,
   queryParams: URLSearchParams
 ): Promise<GitHubSearchResponse<T>> {
   queryParams.set('per_page', String(GITHUB_SEARCH_PAGE_SIZE));
   queryParams.set('page', '1');
 
-  const firstPage = await githubFetch<GitHubSearchResponse<T>>(`${endpoint}?${queryParams.toString()}`);
-  const resultLimit = Math.min(firstPage.total_count, GITHUB_SEARCH_RESULT_LIMIT);
-  const totalPages = Math.ceil(resultLimit / GITHUB_SEARCH_PAGE_SIZE);
+  const data = await githubFetch<{
+    total_count: number;
+    incomplete_results: boolean;
+    items: T[];
+  }>(`${endpoint}?${queryParams.toString()}`);
 
-  if (totalPages <= 1) {
-    return firstPage;
-  }
-
-  const remainingPages = await Promise.all(
-    Array.from({ length: totalPages - 1 }, async (_, index) => {
-      const pageParams = new URLSearchParams(queryParams);
-      pageParams.set('page', String(index + 2));
-      return githubFetch<GitHubSearchResponse<T>>(`${endpoint}?${pageParams.toString()}`);
-    })
-  );
+  const totalPages = Math.ceil(Math.min(data.total_count, GITHUB_SEARCH_RESULT_LIMIT) / GITHUB_SEARCH_PAGE_SIZE);
 
   return {
-    total_count: firstPage.total_count,
-    incomplete_results: [firstPage, ...remainingPages].some((page) => page.incomplete_results),
-    items: [firstPage, ...remainingPages].flatMap((page) => page.items).slice(0, resultLimit),
+    ...data,
+    page: 1,
+    total_pages: totalPages,
+    next_page: totalPages > 1 ? 2 : null,
+    prev_page: null,
+  };
+}
+
+function buildSearchParams(
+  query: string,
+  page: number,
+  extraParams?: URLSearchParams
+): URLSearchParams {
+  const params = new URLSearchParams(extraParams);
+  params.set('q', query);
+  params.set('per_page', String(GITHUB_SEARCH_PAGE_SIZE));
+  params.set('page', String(page));
+  return params;
+}
+
+async function fetchSearchPage<T>(
+  endpoint: string,
+  query: string,
+  page: number,
+  extraParams?: URLSearchParams
+): Promise<GitHubSearchResponse<T>> {
+  const params = buildSearchParams(query, page, extraParams);
+  const data = await githubFetch<{
+    total_count: number;
+    incomplete_results: boolean;
+    items: T[];
+  }>(`${endpoint}?${params.toString()}`);
+
+  const totalPages = Math.ceil(Math.min(data.total_count, GITHUB_SEARCH_RESULT_LIMIT) / GITHUB_SEARCH_PAGE_SIZE);
+
+  return {
+    ...data,
+    page,
+    total_pages: totalPages,
+    next_page: page < totalPages ? page + 1 : null,
+    prev_page: page > 1 ? page - 1 : null,
   };
 }
 
@@ -201,14 +226,14 @@ export const githubApi = {
   },
 
   searchUsers: async (query: string): Promise<GitHubSearchUsersResponse> => {
-    return searchAllPages<GitHubSearchUser>(
+    return searchFirstPage<GitHubSearchUser>(
       '/search/users',
       new URLSearchParams({ q: query })
     );
   },
 
   searchRepositories: async (query: string): Promise<GitHubSearchReposResponse> => {
-    return searchAllPages<GitHubRepository>(
+    return searchFirstPage<GitHubRepository>(
       '/search/repositories',
       new URLSearchParams({
         q: query,
@@ -217,4 +242,6 @@ export const githubApi = {
       })
     );
   },
+
+  fetchSearchPage,
 };
