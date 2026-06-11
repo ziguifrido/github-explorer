@@ -15,7 +15,27 @@ npm run lint       # ESLint v9
 
 Always run `npm run lint` after making changes. No typecheck script is configured; verify types via `npm run build` or `npx tsc --noEmit`.
 
+Do not commit changes unless explicitly asked to.
+
 All UI text is in English.
+
+## Search API
+
+GitHub Search API results are fetched one page at a time (100 per page, max 1000
+results). The initial `searchUsers()` / `searchRepositories()` calls fetch only
+the first page and return pagination metadata (`total_pages`, `next_page`,
+`prev_page`). Use `githubApi.fetchSearchPage(endpoint, query, page, extraParams?)`
+to load additional pages on demand. The response type is `GitHubSearchResponse<T>`,
+exported from `src/lib/github.ts`.
+
+```typescript
+// First page
+const res = await githubApi.searchUsers("torvalds");
+// res.items, res.total_pages, res.next_page
+
+// Subsequent page
+const page2 = await githubApi.fetchSearchPage("/search/users", "torvalds", 2);
+```
 
 ## Node.js
 

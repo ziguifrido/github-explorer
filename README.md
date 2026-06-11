@@ -1,12 +1,13 @@
 # GitHub Explorer
 
-High-performance dashboard for exploring GitHub profiles and repositories.
+High-performance dashboard for exploring GitHub users, repositories, and search results.
 
-**v0.2.0**
+**v0.3.0**
 
 ## Features
 
-- **Smart search** — auto-detects whether input is a user (`torvalds`) or repository (`facebook/react`)
+- **Combined search** — single query searches both users and repositories simultaneously with paginated results
+- **Search results** — dedicated results view with user cards and repository cards, each independently paginated
 - **User dashboard** — full profile, aggregated stats (stars, forks), language distribution chart, repository list with search, language filter, sorting, and pagination
 - **Repository dashboard** — metadata, rendered README, commit timeline, contributors, language breakdown with percent bar
 - **Light / Dark theme** — toggles via navbar button, follows system preference by default, persists choice in a cookie (365 days)
@@ -65,19 +66,21 @@ docker run -p 3000:3000 github-explorer
 ```
 src/
 ├── app/
+│   ├── api/github/[...path]/route.ts  # GitHub API proxy (rate-limit, path whitelist)
 │   ├── layout.tsx         # root layout with Geist fonts, theme-color, ThemeProvider
 │   ├── page.tsx           # main page with view switching + footer
 │   └── globals.css        # global styles, GitHub Primer palette, light-dark() variables
 ├── components/
-│   ├── LayoutHeader.tsx    # sticky header with nav, theme toggle, logo → project repo
+│   ├── LayoutHeader.tsx    # sticky header with nav, theme toggle, logo → search view
 │   ├── ThemeToggle.tsx     # light/dark toggle (Sun/Moon)
 │   ├── ViewSearch.tsx      # initial search screen
+│   ├── ViewSearchResults.tsx  # combined user/repo results with pagination
 │   ├── ViewUser.tsx        # user profile dashboard
 │   ├── ViewRepo.tsx        # repository dashboard
 │   ├── DashboardSkeletons.tsx
 │   └── ui/                 # base components (shadcn-style)
 ├── lib/
-│   ├── github.ts           # GitHub REST API client
+│   ├── github.ts           # GitHub REST API client with paginated search
 │   ├── theme.tsx           # ThemeProvider, useTheme, cookie persistence
 │   └── utils.ts            # cn() utility
 └── store/
