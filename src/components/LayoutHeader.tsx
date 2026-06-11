@@ -9,22 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const LayoutHeader = () => {
-  const { view, navigationStack, popNavigation, search } = useAppStore();
-
-  const goToProjectRepo = () => {
-    search("ziguifrido/github-explorer");
-  };
-
-  const resetToSearch = () => {
-    useAppStore.setState({
-      navigationStack: [{ view: "search" }],
-      view: "search",
-      username: "",
-      repoOwner: "",
-      repoName: "",
-      error: null,
-    });
-  };
+  const { view, navigationStack, popNavigation, resetToSearch } = useAppStore();
 
   // Check if we came from a User dashboard to the Repository dashboard
   const hasUserInStack = React.useMemo(() => {
@@ -40,7 +25,7 @@ export const LayoutHeader = () => {
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo / Title */}
         <div
-          onClick={goToProjectRepo}
+          onClick={resetToSearch}
           className="flex items-center gap-2 cursor-pointer group"
         >
           <div className="w-8 h-8 rounded-lg bg-muted border border-border flex items-center justify-center group-hover:border-border transition-colors">

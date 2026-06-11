@@ -51,7 +51,7 @@ export const ViewSearch = () => {
     { label: 'Torvalds', value: 'torvalds' },
     { label: 'React Project', value: 'facebook/react' },
     { label: 'Next.js Project', value: 'vercel/next.js' },
-    { label: 'Vite Developer', value: 'yyx990803' },
+    { label: 'Machine Learning', value: 'machine learning' },
   ];
 
   return (
@@ -96,7 +96,7 @@ export const ViewSearch = () => {
               }}
               onKeyDown={handleKeyDown}
               disabled={loading}
-              placeholder="Enter a username (e.g. 'torvalds') or repository (e.g. 'facebook/react')..."
+              placeholder="Search users, repositories, or type 'user/repo'..."
               className="w-full bg-transparent resize-none outline-none border-none py-2 px-3 text-sm md:text-base text-foreground placeholder-tertiary min-h-[44px] max-h-[180px] scrollbar-none font-sans"
             />
             
@@ -213,6 +213,8 @@ export const ViewSearch = () => {
                     <div className="w-6 h-6 rounded-md bg-muted/60 border border-border flex items-center justify-center shrink-0">
                       {item.type === 'repo' ? (
                         <Compass className="w-3.5 h-3.5 text-tertiary group-hover:text-foreground transition-colors" />
+                      ) : item.type === 'search' ? (
+                        <History className="w-3.5 h-3.5 text-tertiary group-hover:text-foreground transition-colors" />
                       ) : (
                         <GithubIcon className="w-3.5 h-3.5 text-tertiary group-hover:text-foreground transition-colors" />
                       )}
