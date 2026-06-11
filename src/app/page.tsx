@@ -12,7 +12,6 @@ import {
   RepoDashboardSkeleton,
 } from "@/components/DashboardSkeletons";
 import { GithubIcon } from "@/components/ui/icons";
-import { AnimatePresence, motion } from "framer-motion";
 
 export default function Home() {
   const { view, loading, loadingType } = useAppStore();
@@ -50,18 +49,9 @@ export default function Home() {
         <div className="absolute top-[-10%] left-[20%] w-[300px] h-[300px] rounded-full bg-violet-600/10 blur-[120px] pointer-events-none select-none" />
         <div className="absolute bottom-[20%] right-[10%] w-[350px] h-[350px] rounded-full bg-emerald-600/5 blur-[150px] pointer-events-none select-none" />
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={loading ? `loading-${loadingType}` : `view-${view}`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="flex-1 flex flex-col w-full h-full"
-          >
-            {renderContent()}
-          </motion.div>
-        </AnimatePresence>
+        <div className="flex-1 flex flex-col w-full h-full">
+          {renderContent()}
+        </div>
       </main>
 
       {/* Modern Minimalist Footer */}
