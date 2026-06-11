@@ -11,6 +11,8 @@ const ALLOWED_PATHS = [
   /^\/repos\/[^/]+\/[^/]+\/commits$/,
   /^\/repos\/[^/]+\/[^/]+\/contributors$/,
   /^\/repos\/[^/]+\/[^/]+\/languages$/,
+  /^\/search\/users$/,
+  /^\/search\/repositories$/,
 ] as const;
 
 function isAllowedPath(pathname: string) {
