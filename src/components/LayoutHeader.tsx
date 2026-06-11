@@ -9,24 +9,10 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const LayoutHeader = () => {
-  const { view, navigationStack, popNavigation, search } = useAppStore();
+  const { view, navigationStack, popNavigation, search, resetToSearch } = useAppStore();
 
   const goToProjectRepo = () => {
     search("ziguifrido/github-explorer");
-  };
-
-  const resetToSearch = () => {
-    useAppStore.setState({
-      navigationStack: [{ view: "search" }],
-      view: "search",
-      username: "",
-      repoOwner: "",
-      repoName: "",
-      error: null,
-      searchUsersResults: [],
-      searchReposResults: [],
-      searchQuery: "",
-    });
   };
 
   // Check if we came from a User dashboard to the Repository dashboard

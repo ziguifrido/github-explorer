@@ -54,6 +54,7 @@ interface AppStore {
   // Actions
   setView: (view: 'search' | 'results' | 'user' | 'repo') => void;
   resetError: () => void;
+  resetToSearch: () => void;
   pushNavigation: (step: NavigationStep) => void;
   popNavigation: () => void;
   clearHistory: () => void;
@@ -110,6 +111,26 @@ export const useAppStore = create<AppStore>()(
       // Actions
       setView: (view) => set({ view }),
       resetError: () => set({ error: null }),
+      resetToSearch: () => set({
+        view: 'search',
+        username: '',
+        repoOwner: '',
+        repoName: '',
+        navigationStack: [{ view: 'search' }],
+        activeUser: null,
+        activeUserRepos: [],
+        activeRepo: null,
+        activeRepoReadme: null,
+        activeRepoCommits: [],
+        activeRepoContributors: [],
+        activeRepoLanguages: {},
+        searchUsersResults: [],
+        searchReposResults: [],
+        searchQuery: '',
+        loading: false,
+        loadingType: null,
+        error: null,
+      }),
       
       pushNavigation: (step) => set((state) => {
         // Prevent duplicate consecutive navigation steps
