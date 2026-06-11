@@ -23,6 +23,9 @@ export const LayoutHeader = () => {
       repoOwner: "",
       repoName: "",
       error: null,
+      searchUsersResults: [],
+      searchReposResults: [],
+      searchQuery: "",
     });
   };
 

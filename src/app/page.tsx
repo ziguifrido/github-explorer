@@ -4,6 +4,7 @@ import React from "react";
 import { useAppStore } from "@/store/useAppStore";
 import { LayoutHeader } from "@/components/LayoutHeader";
 import { ViewSearch } from "@/components/ViewSearch";
+import { ViewSearchResults } from "@/components/ViewSearchResults";
 import { ViewUser } from "@/components/ViewUser";
 import { ViewRepo } from "@/components/ViewRepo";
 import {
@@ -26,6 +27,8 @@ export default function Home() {
     }
 
     switch (view) {
+      case "results":
+        return <ViewSearchResults key="results-view" />;
       case "user":
         return <ViewUser key="user-view" />;
       case "repo":
