@@ -5,25 +5,27 @@ import {
   GitHubUser, 
   GitHubRepository, 
   GitHubCommit, 
-  GitHubContributor 
+  GitHubContributor,
+  GitHubSearchUser,
 } from '@/lib/github';
 
 export interface HistoryItem {
-  type: 'user' | 'repo';
+  type: 'user' | 'repo' | 'search';
   query: string;
   timestamp: number;
 }
 
 export interface NavigationStep {
-  view: 'search' | 'user' | 'repo';
+  view: 'search' | 'results' | 'user' | 'repo';
   username?: string;
   repoOwner?: string;
   repoName?: string;
+  searchQuery?: string;
 }
 
 interface AppStore {
   // Navigation
-  view: 'search' | 'user' | 'repo';
+  view: 'search' | 'results' | 'user' | 'repo';
   username: string;
   repoOwner: string;
   repoName: string;
@@ -38,6 +40,11 @@ interface AppStore {
   activeRepoContributors: GitHubContributor[];
   activeRepoLanguages: Record<string, number>;
   
+  // Search Results
+  searchUsersResults: GitHubSearchUser[];
+  searchReposResults: GitHubRepository[];
+  searchQuery: string;
+  
   // UI Status
   loading: boolean;
   loadingType: 'user' | 'repo' | null;
@@ -45,7 +52,7 @@ interface AppStore {
   searchHistory: HistoryItem[];
 
   // Actions
-  setView: (view: 'search' | 'user' | 'repo') => void;
+  setView: (view: 'search' | 'results' | 'user' | 'repo') => void;
   resetError: () => void;
   pushNavigation: (step: NavigationStep) => void;
   popNavigation: () => void;
@@ -91,6 +98,10 @@ export const useAppStore = create<AppStore>()(
       activeRepoContributors: [],
       activeRepoLanguages: {},
       
+      searchUsersResults: [],
+      searchReposResults: [],
+      searchQuery: '',
+      
       loading: false,
       loadingType: null,
       error: null,
@@ -108,7 +119,8 @@ export const useAppStore = create<AppStore>()(
           lastStep.view === step.view &&
           lastStep.username === step.username &&
           lastStep.repoOwner === step.repoOwner &&
-          lastStep.repoName === step.repoName
+          lastStep.repoName === step.repoName &&
+          lastStep.searchQuery === step.searchQuery
         ) {
           return {};
         }
@@ -119,6 +131,7 @@ export const useAppStore = create<AppStore>()(
           username: step.username || '',
           repoOwner: step.repoOwner || '',
           repoName: step.repoName || '',
+          ...(step.view === 'results' ? { searchQuery: step.searchQuery || '' } : {}),
         };
       }),
       
@@ -143,6 +156,7 @@ export const useAppStore = create<AppStore>()(
           username: prevStep.username || '',
           repoOwner: prevStep.repoOwner || '',
           repoName: prevStep.repoName || '',
+          ...(prevStep.view === 'results' ? { searchQuery: prevStep.searchQuery || '' } : {}),
         };
       }),
 
@@ -156,7 +170,7 @@ export const useAppStore = create<AppStore>()(
                        !cleanQuery.startsWith('/') && 
                        !cleanQuery.endsWith('/');
         
-        set({ loading: true, loadingType: isRepo ? 'repo' : 'user', error: null });
+        set({ loading: true, loadingType: isRepo ? 'repo' : null, error: null });
         
         try {
           if (isRepo) {
@@ -200,34 +214,34 @@ export const useAppStore = create<AppStore>()(
               repoName: name,
             });
           } else {
-            // Perform user details fetch
-            const [user, repos] = await Promise.all([
-              githubApi.getUser(cleanQuery),
-              githubApi.getUserRepos(cleanQuery).catch(() => []),
+            // Perform generic search across users and repositories
+            const [usersResponse, reposResponse] = await Promise.all([
+              githubApi.searchUsers(cleanQuery),
+              githubApi.searchRepositories(cleanQuery),
             ]);
 
             // Add search item to history
             const historyItem: HistoryItem = {
-              type: 'user',
+              type: 'search',
               query: cleanQuery,
               timestamp: Date.now(),
             };
 
             set((state) => {
-              // Deduplicate history
               const filteredHistory = state.searchHistory.filter(
-                (item) => !(item.type === 'user' && item.query.toLowerCase() === cleanQuery.toLowerCase())
+                (item) => !(item.type === 'search' && item.query.toLowerCase() === cleanQuery.toLowerCase())
               );
               return {
-                activeUser: user,
-                activeUserRepos: repos,
+                searchUsersResults: usersResponse.items,
+                searchReposResults: reposResponse.items,
+                searchQuery: cleanQuery,
                 searchHistory: [historyItem, ...filteredHistory].slice(0, 10),
               };
             });
 
             get().pushNavigation({
-              view: 'user',
-              username: cleanQuery,
+              view: 'results',
+              searchQuery: cleanQuery,
             });
           }
         } catch (err: unknown) {
