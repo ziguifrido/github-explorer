@@ -2,7 +2,7 @@
 
 High-performance dashboard for exploring GitHub users, repositories, and search results.
 
-**v0.3.0**
+**v0.3.2**
 
 ## Features
 
@@ -26,14 +26,14 @@ High-performance dashboard for exploring GitHub users, repositories, and search 
 - **State:** Zustand v5 with local persistence
 - **Animations:** Framer Motion v12
 - **Charts:** Recharts v3 (language donut chart)
-- **Markdown:** react-markdown + remark-gfm
+- **Markdown:** react-markdown + remark-gfm + rehype-raw
 - **PWA:** Web App Manifest + service worker via Next.js PWA plugin
 - **Icons:** Lucide React
 
 ## Prerequisites
 
 - Node.js 20+
-- (Optional) `NEXT_PUBLIC_GITHUB_TOKEN` in `.env.local` to increase GitHub API rate limit
+- (Optional) `GITHUB_TOKEN` in `.env.local` to increase GitHub API rate limit
 
 ## Commands
 

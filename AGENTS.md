@@ -17,6 +17,14 @@ Always run `npm run lint` after making changes. No typecheck script is configure
 
 Do not commit changes unless explicitly asked to.
 
+## Version bump
+
+When asked to bump the project version, update all three files:
+
+- `package.json` — `"version"` field
+- `package-lock.json` — `"version"` field (both top-level and nested `packages[""]`)
+- `README.md` — version badge at the top
+
 All UI text is in English.
 
 ## Search API
