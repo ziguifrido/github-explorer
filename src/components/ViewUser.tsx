@@ -132,7 +132,7 @@ export const ViewUser = () => {
 
   if (!activeUser) return null;
 
-  const formattedDate = new Date(activeUser.created_at).toLocaleDateString(undefined, {
+  const formattedDate = new Date(activeUser.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

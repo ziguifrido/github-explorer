@@ -106,18 +106,17 @@ export const ViewSearch = () => {
                 <span>Press Enter to search</span>
               </span>
 
-              <Button
+              <button
                 type="submit"
                 disabled={loading || !query.trim()}
-                size="icon"
-                className="w-8 h-8 rounded-lg bg-primary text-primary-foreground hover:bg-white disabled:bg-muted disabled:text-tertiary transition-all duration-200 cursor-pointer"
+                className="w-8 h-8 rounded-lg bg-primary text-primary-foreground hover:bg-white disabled:bg-muted disabled:text-tertiary transition-all duration-200 cursor-pointer flex items-center justify-center shrink-0"
               >
                 {loading ? (
                   <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
                 ) : (
                   <Send className="w-3.5 h-3.5" />
                 )}
-              </Button>
+              </button>
             </div>
           </div>
         </form>
@@ -224,7 +223,7 @@ export const ViewSearch = () => {
                     </span>
                   </div>
                   <span className="text-[10px] text-tertiary group-hover:text-tertiary font-sans transition-colors whitespace-nowrap">
-                    {new Date(item.timestamp).toLocaleDateString(undefined, {
+                    {new Date(item.timestamp).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                     })}
