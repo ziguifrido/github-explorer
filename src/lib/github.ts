@@ -47,6 +47,7 @@ export interface GitHubRepository {
     url: string | null;
   } | null;
   topics: string[];
+  default_branch: string;
 }
 
 export interface GitHubCommit {
