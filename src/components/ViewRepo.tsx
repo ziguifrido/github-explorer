@@ -269,7 +269,7 @@ export const ViewRepo = () => {
               {activeRepoCommits.length > 0 ? (
                   <div className="relative pl-6 border-l border-border space-y-6">
                   {activeRepoCommits.map((item) => {
-                    const commitDate = new Date(item.commit.author.date).toLocaleDateString(undefined, {
+                    const commitDate = new Date(item.commit.author.date).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                       hour: '2-digit',
