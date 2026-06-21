@@ -2,7 +2,7 @@
 
 High-performance dashboard for exploring GitHub users, repositories, and search results.
 
-**v0.3.2**
+**v0.3.3**
 
 ## Features
 
