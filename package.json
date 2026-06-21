@@ -1,6 +1,6 @@
 {
   "name": "github-explorer-dashboard",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "engines": {
     "node": ">=22.0.0",
@@ -18,9 +18,9 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.39.0",
     "lucide-react": "^1.16.0",
-    "next": "16.2.6",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
+    "next": "16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-markdown": "^10.1.0",
     "recharts": "^3.8.0",
     "rehype-raw": "^7.0.0",
@@ -39,7 +39,7 @@
     "@types/react-dom": "^19",
     "@types/recharts": "^1.8.29",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

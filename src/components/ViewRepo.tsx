@@ -52,7 +52,8 @@ export const ViewRepo = () => {
     activeRepoCommits, 
     activeRepoContributors, 
     activeRepoLanguages, 
-    selectUser 
+    selectUser,
+    search 
   } = useAppStore();
 
   // 1. Languages breakdown
@@ -158,7 +159,8 @@ export const ViewRepo = () => {
                 <Badge 
                   key={topic} 
                   variant="secondary" 
-                  className="bg-muted hover:bg-muted text-muted-foreground hover:text-foreground text-[11px] py-0.5 px-2 rounded-md font-sans border border-subtle"
+                  onClick={() => search(`topic:${topic}`)}
+                  className="bg-muted hover:bg-muted text-muted-foreground hover:text-foreground text-[11px] py-0.5 px-2 rounded-md font-sans border border-subtle cursor-pointer transition-colors"
                 >
                   #{topic}
                 </Badge>
@@ -170,9 +172,9 @@ export const ViewRepo = () => {
 
       {/* 2. Advanced Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="glass-card border-border">
+        <a href={`${activeRepo.html_url}/stargazers`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block">Stars</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Stars</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.stargazers_count.toLocaleString()}
@@ -180,10 +182,10 @@ export const ViewRepo = () => {
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500/20" />
             </div>
           </CardContent>
-        </Card>
-        <Card className="glass-card border-border">
+        </a>
+        <a href={`${activeRepo.html_url}/forks`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block">Forks</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Forks</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.forks_count.toLocaleString()}
@@ -191,10 +193,10 @@ export const ViewRepo = () => {
               <GitFork className="w-4 h-4 text-emerald-500" />
             </div>
           </CardContent>
-        </Card>
-        <Card className="glass-card border-border">
+        </a>
+        <a href={`${activeRepo.html_url}/issues`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block">Open Issues</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Open Issues</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.open_issues_count.toLocaleString()}
@@ -202,10 +204,10 @@ export const ViewRepo = () => {
               <AlertCircle className="w-4 h-4 text-red-500" />
             </div>
           </CardContent>
-        </Card>
-        <Card className="glass-card border-border">
+        </a>
+        <a href={`${activeRepo.html_url}/watchers`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block">Watchers</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Watchers</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.watchers_count.toLocaleString()}
@@ -213,7 +215,7 @@ export const ViewRepo = () => {
               <Eye className="w-4 h-4 text-sky-500" />
             </div>
           </CardContent>
-        </Card>
+        </a>
       </div>
 
       {/* 3. Details Navigation Tabs */}
