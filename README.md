@@ -32,7 +32,7 @@ High-performance dashboard for exploring GitHub users, repositories, and search 
 
 ## Prerequisites
 
-- Node.js 20+
+- Node.js >=22.0.0
 - (Optional) `GITHUB_TOKEN` in `.env.local` to increase GitHub API rate limit
 
 ## Commands
