@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { motion } from 'framer-motion';
 
 // Common GitHub language colors mapping
@@ -236,7 +237,21 @@ export const ViewRepo = () => {
           <Card className="glass-card border-border">
             <CardContent className="p-6 md:p-8 max-h-[700px] overflow-y-auto">
               <div className="prose dark:prose-invert max-w-none text-foreground text-sm leading-relaxed prose-headings:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-code:font-mono prose-pre:bg-background prose-pre:border prose-pre:border-border prose-a:text-foreground hover:prose-a:text-white">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    img: ({ src, alt }) => {
+                      if (!src || typeof src !== 'string') return null;
+                      const isAbsolute = src.startsWith('http://') || src.startsWith('https://');
+                      const resolved = isAbsolute
+                        ? src
+                        : `https://raw.githubusercontent.com/${activeRepo.owner.login}/${activeRepo.name}/${activeRepo.default_branch}/${src.replace(/^\.?\//, '')}`;
+                      // eslint-disable-next-line @next/next/no-img-element
+                      return <img src={resolved} alt={alt || ''} className="max-w-full h-auto rounded-lg" />;
+                    },
+                  }}
+                >
                   {activeRepoReadme || 'No README available for this repository.'}
                 </ReactMarkdown>
               </div>
