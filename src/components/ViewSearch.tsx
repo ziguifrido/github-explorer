@@ -224,7 +224,7 @@ export const ViewSearch = () => {
                     </span>
                   </div>
                   <span className="text-[10px] text-tertiary group-hover:text-tertiary font-sans transition-colors whitespace-nowrap">
-                    {new Date(item.timestamp).toLocaleDateString(undefined, {
+                    {new Date(item.timestamp).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
                     })}

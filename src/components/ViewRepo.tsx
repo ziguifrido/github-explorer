@@ -71,13 +71,13 @@ export const ViewRepo = () => {
   if (!activeRepo) return null;
 
   // Date Format Helpers
-  const createdDate = new Date(activeRepo.created_at).toLocaleDateString(undefined, {
+  const createdDate = new Date(activeRepo.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   });
   
-  const pushedDate = new Date(activeRepo.pushed_at).toLocaleDateString(undefined, {
+  const pushedDate = new Date(activeRepo.pushed_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
