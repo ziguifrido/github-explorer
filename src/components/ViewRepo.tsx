@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
 import { motion } from 'framer-motion';
 
 // Common GitHub language colors mapping
@@ -239,7 +240,7 @@ export const ViewRepo = () => {
               <div className="prose dark:prose-invert max-w-none text-foreground text-sm leading-relaxed prose-headings:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-code:font-mono prose-pre:bg-background prose-pre:border prose-pre:border-border prose-a:text-foreground hover:prose-a:text-white">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
-                  rehypePlugins={[rehypeRaw]}
+                  rehypePlugins={[rehypeRaw, rehypeSanitize]}
                   components={{
                     img: ({ src, alt }) => {
                       if (!src || typeof src !== 'string') return null;
