@@ -19,6 +19,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { TwitterIcon } from '@/components/ui/icons';
+import { ShareButton } from '@/components/ui/share-button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -148,12 +149,16 @@ export const ViewUser = () => {
     >
       {/* 1. Header Profile Panel */}
       <Card className="glass-card border-border overflow-hidden relative">
-        <div className="absolute top-0 right-0 p-4">
+        <div className="absolute top-0 right-0 p-4 flex items-center gap-1">
+          <ShareButton
+            url={activeUser.html_url}
+            title={activeUser.name || activeUser.login}
+          />
           <a
             href={activeUser.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-tertiary hover:text-foreground transition-colors inline-flex items-center gap-1 text-xs font-medium"
+            className="text-muted-foreground hover:text-foreground border border-border hover:border-ring bg-secondary hover:bg-muted/50 py-2 px-4 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all w-fit cursor-pointer h-10"
           >
             View on GitHub <ExternalLink className="w-3.5 h-3.5" />
           </a>

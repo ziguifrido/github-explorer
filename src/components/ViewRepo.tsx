@@ -21,6 +21,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import { motion } from 'framer-motion';
+import { ShareButton } from '@/components/ui/share-button';
 
 // Common GitHub language colors mapping
 const LANGUAGE_COLORS: Record<string, string> = {
@@ -129,14 +130,20 @@ export const ViewRepo = () => {
               </p>
             </div>
             
-            <a
-              href={activeRepo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground border border-border hover:border-ring bg-secondary hover:bg-muted/50 py-2 px-4 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all w-fit cursor-pointer h-10"
-            >
-              Open on GitHub <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            <div className="flex items-center gap-2">
+              <ShareButton
+                url={activeRepo.html_url}
+                title={`${activeRepo.owner.login}/${activeRepo.name}`}
+              />
+              <a
+                href={activeRepo.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground border border-border hover:border-ring bg-secondary hover:bg-muted/50 py-2 px-4 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all w-fit cursor-pointer h-10"
+              >
+                <ExternalLink className="w-3.5 h-3.5" /> Open on GitHub
+              </a>
+            </div>
           </div>
 
           {activeRepo.description && (
