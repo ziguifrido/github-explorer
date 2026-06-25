@@ -12,6 +12,7 @@ High-performance dashboard for exploring GitHub users, repositories, and search 
 - **Repository dashboard** — metadata, rendered README, commit timeline, contributors, language breakdown with percent bar
 - **Light / Dark theme** — toggles via navbar button, follows system preference by default, persists choice in a cookie (365 days)
 - **GitHub Primer color palette** — light mode (`#ffffff` / `#1F2328` / `#0969da`) and dark mode (`#0d1117` / `#e6edf3` / `#58a6ff`)
+- **Share button** — native Web Share API with clipboard fallback on user profiles and repository pages
 - **Stack navigation** — "Back to User" button when navigating from profile to repository
 - **Persistent history** — last 10 queries saved to `localStorage`
 - **Skeleton loading** — loading states for user and repository dashboards
@@ -79,6 +80,7 @@ src/
 │   ├── ViewRepo.tsx        # repository dashboard
 │   ├── DashboardSkeletons.tsx
 │   └── ui/                 # base components (shadcn-style)
+│       └── share-button.tsx # native share + clipboard fallback
 ├── lib/
 │   ├── github.ts           # GitHub REST API client with paginated search
 │   ├── theme.tsx           # ThemeProvider, useTheme, cookie persistence

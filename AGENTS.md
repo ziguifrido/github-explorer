@@ -15,7 +15,7 @@ npm run lint       # ESLint v9
 
 Always run `npm run lint` after making changes. No typecheck script is configured; verify types via `npm run build` or `npx tsc --noEmit`.
 
-Do not commit changes unless explicitly asked to.
+Do not commit changes unless explicitly asked to. When asked to create a commit, check whether `README.md` and `AGENTS.md` need updating for the changes being committed.
 
 ## Version bump
 
