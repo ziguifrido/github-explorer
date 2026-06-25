@@ -39,7 +39,7 @@ exported from `src/lib/github.ts`.
 ```typescript
 // First page
 const res = await githubApi.searchUsers("torvalds");
-// res.items, res.total_pages, res.next_page
+// res.items, res.total_pages, res.next_page, res.prev_page
 
 // Subsequent page
 const page2 = await githubApi.fetchSearchPage("/search/users", "torvalds", 2);
@@ -71,6 +71,11 @@ added to `images.remotePatterns` in `next.config.ts`.
 > rm node_modules/.bin/next && ln -s ../next/dist/bin/next node_modules/.bin/next
 > ```
 > This fixes a Node.js 26 quirk where npm creates a regular file instead of a symlink for `.bin/next`.
+>
+> The same issue affects `npx tsc --noEmit`:
+> ```bash
+> rm node_modules/.bin/tsc && ln -s ../typescript/bin/tsc node_modules/.bin/tsc
+> ```
 
 ## Docker
 
