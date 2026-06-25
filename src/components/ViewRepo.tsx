@@ -111,12 +111,13 @@ export const ViewRepo = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span
+                <button
+                  type="button"
                   onClick={() => selectUser(activeRepo.owner.login)}
-                  className="text-sm font-semibold font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  className="text-sm font-semibold font-mono text-muted-foreground hover:text-foreground transition-colors bg-transparent border-none p-0 inline-flex items-center cursor-pointer"
                 >
                   {activeRepo.owner.login}
-                </span>
+                </button>
                 <span className="text-tertiary">/</span>
                 <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground font-mono">
                   {activeRepo.name}
@@ -182,6 +183,7 @@ export const ViewRepo = () => {
                   key={topic}
                   variant="secondary"
                   onClick={() => search(`topic:${topic}`)}
+                  render={<button />}
                   className="bg-muted hover:bg-muted text-muted-foreground hover:text-foreground text-[11px] py-0.5 px-2 rounded-md font-sans border border-subtle cursor-pointer transition-colors"
                 >
                   #{topic}
@@ -382,16 +384,17 @@ export const ViewRepo = () => {
                                 className="w-5 h-5 rounded-full object-cover border border-border shrink-0"
                               />
                             )}
-                            <span
+                            <button
+                              type="button"
                               onClick={() =>
                                 item.author && selectUser(item.author.login)
                               }
-                              className={`text-xs text-muted-foreground font-mono ${item.author ? "hover:text-foreground hover:underline cursor-pointer" : ""}`}
+                              className={`text-xs text-muted-foreground font-mono bg-transparent border-none p-0 inline-flex items-center ${item.author ? "hover:text-foreground hover:underline cursor-pointer" : ""}`}
                             >
                               {item.author
                                 ? item.author.login
                                 : item.commit.author.name}
-                            </span>
+                            </button>
                             <span className="text-[10px] text-tertiary font-mono">
                               |
                             </span>
@@ -425,10 +428,11 @@ export const ViewRepo = () => {
               {activeRepoContributors.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                   {activeRepoContributors.map((c) => (
-                    <div
+                    <button
+                      type="button"
                       key={c.id}
                       onClick={() => selectUser(c.login)}
-                      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-secondary hover:bg-muted/40 hover:border-border transition-all duration-200 cursor-pointer group"
+                      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-secondary hover:bg-muted/40 hover:border-border transition-all duration-200 cursor-pointer text-left w-full group"
                     >
                       <Image
                         src={c.avatar_url}
@@ -446,7 +450,7 @@ export const ViewRepo = () => {
                           {c.contributions === 1 ? "commit" : "commits"}
                         </span>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               ) : (
