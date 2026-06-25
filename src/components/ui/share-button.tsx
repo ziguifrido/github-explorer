@@ -12,13 +12,16 @@ export const ShareButton = ({ url, title }: ShareButtonProps) => {
   const [copied, setCopied] = useState(false);
 
   const handleShare = useCallback(async () => {
+    let shared = false;
     if (navigator.share) {
       try {
         await navigator.share({ title, url });
-      } catch {
-        /* user cancelled */
+        shared = true;
+      } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return;
       }
-    } else {
+    }
+    if (!shared) {
       try {
         await navigator.clipboard.writeText(url);
         setCopied(true);
