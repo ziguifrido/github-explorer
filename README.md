@@ -2,7 +2,7 @@
 
 High-performance dashboard for exploring GitHub users, repositories, and search results.
 
-**v0.3.3**
+**v0.3.4**
 
 ## Features
 
@@ -16,7 +16,7 @@ High-performance dashboard for exploring GitHub users, repositories, and search 
 - **Stack navigation** — "Back to User" button when navigating from profile to repository
 - **Persistent history** — last 10 queries saved to `localStorage`
 - **Skeleton loading** — loading states for user and repository dashboards
-- **PWA** — installable as standalone app with dark/light theme-color support
+- **PWA** — installable as standalone app with Web App Manifest and theme-color support
 
 ## Stack
 
@@ -27,8 +27,8 @@ High-performance dashboard for exploring GitHub users, repositories, and search 
 - **State:** Zustand v5 with local persistence
 - **Animations:** Framer Motion v12
 - **Charts:** Recharts v3 (language donut chart)
-- **Markdown:** react-markdown + remark-gfm + rehype-raw
-- **PWA:** Web App Manifest + service worker via Next.js PWA plugin
+- **Markdown:** react-markdown + remark-gfm + rehype-raw + rehype-sanitize
+- **PWA:** Web App Manifest
 - **Icons:** Lucide React
 
 ## Prerequisites

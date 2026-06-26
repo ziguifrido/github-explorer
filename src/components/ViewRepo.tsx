@@ -1,72 +1,75 @@
-'use client';
+"use client";
 
-import React, { useMemo } from 'react';
-import Image from 'next/image';
-import { useAppStore } from '@/store/useAppStore';
-import { 
-  Star, 
-  GitFork, 
-  Eye, 
-  AlertCircle, 
-  Calendar, 
-  FileText, 
+import React, { useMemo } from "react";
+import Image from "next/image";
+import { useAppStore } from "@/store/useAppStore";
+import {
+  Star,
+  GitFork,
+  Eye,
+  AlertCircle,
+  Calendar,
+  FileText,
   ExternalLink,
-  GitCommit
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import rehypeSanitize from 'rehype-sanitize';
-import { motion } from 'framer-motion';
-import { ShareButton } from '@/components/ui/share-button';
+  GitCommit,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import { motion } from "framer-motion";
+import { ShareButton } from "@/components/ui/share-button";
 
 // Common GitHub language colors mapping
 const LANGUAGE_COLORS: Record<string, string> = {
-  TypeScript: '#3178c6',
-  JavaScript: '#f1e05a',
-  Python: '#3572A5',
-  Go: '#00ADD8',
-  Rust: '#dea584',
-  HTML: '#e34c26',
-  CSS: '#563d7c',
-  'C++': '#f34b7d',
-  C: '#555555',
-  'C#': '#178600',
-  Java: '#b07219',
-  Ruby: '#701516',
-  PHP: '#4F5D95',
-  Shell: '#89e051',
-  Swift: '#F05138',
-  Kotlin: '#A97BFF',
-  Dart: '#00B4AB',
+  TypeScript: "#3178c6",
+  JavaScript: "#f1e05a",
+  Python: "#3572A5",
+  Go: "#00ADD8",
+  Rust: "#dea584",
+  HTML: "#e34c26",
+  CSS: "#563d7c",
+  "C++": "#f34b7d",
+  C: "#555555",
+  "C#": "#178600",
+  Java: "#b07219",
+  Ruby: "#701516",
+  PHP: "#4F5D95",
+  Shell: "#89e051",
+  Swift: "#F05138",
+  Kotlin: "#A97BFF",
+  Dart: "#00B4AB",
 };
 
-const DEFAULT_COLOR = '#8b5cf6'; // violet-500
+const DEFAULT_COLOR = "#8b5cf6"; // violet-500
 
 export const ViewRepo = () => {
-  const { 
-    activeRepo, 
-    activeRepoReadme, 
-    activeRepoCommits, 
-    activeRepoContributors, 
-    activeRepoLanguages, 
+  const {
+    activeRepo,
+    activeRepoReadme,
+    activeRepoCommits,
+    activeRepoContributors,
+    activeRepoLanguages,
     selectUser,
-    search 
+    search,
   } = useAppStore();
 
   // 1. Languages breakdown
   const languageData = useMemo(() => {
-    const totalBytes = Object.values(activeRepoLanguages).reduce((a, b) => a + b, 0);
+    const totalBytes = Object.values(activeRepoLanguages).reduce(
+      (a, b) => a + b,
+      0,
+    );
     if (totalBytes === 0) return [];
-    
+
     return Object.entries(activeRepoLanguages)
       .map(([name, bytes]) => ({
         name,
         bytes,
-        percentage: (bytes / totalBytes) * 100
+        percentage: (bytes / totalBytes) * 100,
       }))
       .sort((a, b) => b.bytes - a.bytes);
   }, [activeRepoLanguages]);
@@ -74,19 +77,25 @@ export const ViewRepo = () => {
   if (!activeRepo) return null;
 
   // Date Format Helpers
-  const createdDate = new Date(activeRepo.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
-  
-  const pushedDate = new Date(activeRepo.pushed_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  const createdDate = new Date(activeRepo.created_at).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    },
+  );
+
+  const pushedDate = new Date(activeRepo.pushed_at).toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    },
+  );
 
   return (
     <motion.div
@@ -102,18 +111,22 @@ export const ViewRepo = () => {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span 
+                <button
+                  type="button"
                   onClick={() => selectUser(activeRepo.owner.login)}
-                  className="text-sm font-semibold font-mono text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                  className="text-sm font-semibold font-mono text-muted-foreground hover:text-foreground transition-colors bg-transparent border-none p-0 inline-flex items-center cursor-pointer"
                 >
                   {activeRepo.owner.login}
-                </span>
+                </button>
                 <span className="text-tertiary">/</span>
                 <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground font-mono">
                   {activeRepo.name}
                 </h2>
                 {activeRepo.fork && (
-                  <Badge variant="outline" className="border-border text-[10px] text-tertiary py-0.5 px-1.5 rounded-md">
+                  <Badge
+                    variant="outline"
+                    className="border-border text-[10px] text-tertiary py-0.5 px-1.5 rounded-md"
+                  >
                     Forked
                   </Badge>
                 )}
@@ -129,7 +142,7 @@ export const ViewRepo = () => {
                 </span>
               </p>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <ShareButton
                 url={activeRepo.html_url}
@@ -155,18 +168,22 @@ export const ViewRepo = () => {
           {/* Topics/Tags & License */}
           <div className="flex flex-wrap items-center gap-3">
             {activeRepo.license && (
-              <Badge variant="outline" className="border-border bg-card/80 text-muted-foreground text-[11px] py-1 px-2.5 rounded-lg flex gap-1 items-center shrink-0">
+              <Badge
+                variant="outline"
+                className="border-border bg-card/80 text-muted-foreground text-[11px] py-1 px-2.5 rounded-lg flex gap-1 items-center shrink-0"
+              >
                 <FileText className="w-3.5 h-3.5 text-tertiary" />
                 {activeRepo.license.spdx_id || activeRepo.license.name}
               </Badge>
             )}
 
             <div className="flex flex-wrap gap-1.5">
-              {activeRepo.topics.map(topic => (
-                <Badge 
-                  key={topic} 
-                  variant="secondary" 
+              {activeRepo.topics.map((topic) => (
+                <Badge
+                  key={topic}
+                  variant="secondary"
                   onClick={() => search(`topic:${topic}`)}
+                  render={<button />}
                   className="bg-muted hover:bg-muted text-muted-foreground hover:text-foreground text-[11px] py-0.5 px-2 rounded-md font-sans border border-subtle cursor-pointer transition-colors"
                 >
                   #{topic}
@@ -179,9 +196,16 @@ export const ViewRepo = () => {
 
       {/* 2. Advanced Metrics Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <a href={`${activeRepo.html_url}/stargazers`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
+        <a
+          href={`${activeRepo.html_url}/stargazers`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="glass-card border-border rounded-xl block group cursor-pointer"
+        >
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Stars</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">
+              Stars
+            </span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.stargazers_count.toLocaleString()}
@@ -190,9 +214,16 @@ export const ViewRepo = () => {
             </div>
           </CardContent>
         </a>
-        <a href={`${activeRepo.html_url}/forks`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
+        <a
+          href={`${activeRepo.html_url}/forks`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="glass-card border-border rounded-xl block group cursor-pointer"
+        >
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Forks</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">
+              Forks
+            </span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.forks_count.toLocaleString()}
@@ -201,9 +232,16 @@ export const ViewRepo = () => {
             </div>
           </CardContent>
         </a>
-        <a href={`${activeRepo.html_url}/issues`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
+        <a
+          href={`${activeRepo.html_url}/issues`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="glass-card border-border rounded-xl block group cursor-pointer"
+        >
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Open Issues</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">
+              Open Issues
+            </span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.open_issues_count.toLocaleString()}
@@ -212,9 +250,16 @@ export const ViewRepo = () => {
             </div>
           </CardContent>
         </a>
-        <a href={`${activeRepo.html_url}/watchers`} target="_blank" rel="noopener noreferrer" className="glass-card border-border rounded-xl block group cursor-pointer">
+        <a
+          href={`${activeRepo.html_url}/watchers`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="glass-card border-border rounded-xl block group cursor-pointer"
+        >
           <CardContent className="p-5 space-y-1.5">
-            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">Watchers</span>
+            <span className="text-xs text-tertiary font-medium uppercase tracking-wider block group-hover:text-foreground transition-colors">
+              Watchers
+            </span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-2xl md:text-3xl font-bold font-mono tracking-tight text-foreground">
                 {activeRepo.watchers_count.toLocaleString()}
@@ -228,16 +273,28 @@ export const ViewRepo = () => {
       {/* 3. Details Navigation Tabs */}
       <Tabs defaultValue="readme" className="space-y-6">
         <TabsList className="bg-background/80 border border-border p-1 rounded-xl flex gap-1 h-fit w-fit flex-wrap">
-          <TabsTrigger value="readme" className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white">
+          <TabsTrigger
+            value="readme"
+            className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white"
+          >
             README.md
           </TabsTrigger>
-          <TabsTrigger value="commits" className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white">
+          <TabsTrigger
+            value="commits"
+            className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white"
+          >
             Recent Commits
           </TabsTrigger>
-          <TabsTrigger value="contributors" className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white">
+          <TabsTrigger
+            value="contributors"
+            className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white"
+          >
             Contributors
           </TabsTrigger>
-          <TabsTrigger value="languages" className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white">
+          <TabsTrigger
+            value="languages"
+            className="rounded-lg text-xs font-semibold px-4 py-2 cursor-pointer transition-all data-[state=active]:bg-muted data-[state=active]:text-white"
+          >
             Languages
           </TabsTrigger>
         </TabsList>
@@ -252,17 +309,24 @@ export const ViewRepo = () => {
                   rehypePlugins={[rehypeRaw, rehypeSanitize]}
                   components={{
                     img: ({ src, alt }) => {
-                      if (!src || typeof src !== 'string') return null;
-                      const isAbsolute = src.startsWith('http://') || src.startsWith('https://');
+                      if (!src || typeof src !== "string") return null;
+                      const isAbsolute =
+                        src.startsWith("http://") || src.startsWith("https://");
                       const resolved = isAbsolute
                         ? src
-                        : `https://raw.githubusercontent.com/${activeRepo.owner.login}/${activeRepo.name}/${activeRepo.default_branch}/${src.replace(/^\.?\//, '')}`;
-                      // eslint-disable-next-line @next/next/no-img-element
-                      return <img src={resolved} alt={alt || ''} className="max-w-full h-auto rounded-lg" />;
+                        : `https://raw.githubusercontent.com/${activeRepo.owner.login}/${activeRepo.name}/${activeRepo.default_branch}/${src.replace(/^\.?\//, "")}`;
+                      return (
+                        <img
+                          src={resolved}
+                          alt={alt || ""}
+                          className="max-w-full h-auto rounded-lg"
+                        />
+                      );
                     },
                   }}
                 >
-                  {activeRepoReadme || 'No README available for this repository.'}
+                  {activeRepoReadme ||
+                    "No README available for this repository."}
                 </ReactMarkdown>
               </div>
             </CardContent>
@@ -273,50 +337,69 @@ export const ViewRepo = () => {
         <TabsContent value="commits">
           <Card className="glass-card border-border">
             <CardHeader>
-              <CardTitle className="text-sm font-semibold tracking-wide text-foreground">Latest 10 Commits</CardTitle>
+              <CardTitle className="text-sm font-semibold tracking-wide text-foreground">
+                Latest 10 Commits
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-6 pt-0">
               {activeRepoCommits.length > 0 ? (
-                  <div className="relative pl-6 border-l border-border space-y-6">
+                <div className="relative pl-6 border-l border-border space-y-6">
                   {activeRepoCommits.map((item) => {
-                    const commitDate = new Date(item.commit.author.date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
+                    const commitDate = new Date(
+                      item.commit.author.date,
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
                     });
-                    
+
                     return (
                       <div key={item.sha} className="relative group">
                         {/* Timeline Bullet */}
                         <div className="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full border-2 border-border bg-[#09090b] group-hover:border-ring transition-colors" />
-                        
+
                         <div className="space-y-1.5">
-                          <p className="text-sm font-medium text-foreground leading-snug">
-                            {item.commit.message}
-                          </p>
+                          <div className="flex items-start gap-2">
+                            <p className="text-sm font-medium text-foreground leading-snug flex-1 min-w-0">
+                              {item.commit.message}
+                            </p>
+                            <a
+                              href={`https://github.com/${activeRepo.owner.login}/${activeRepo.name}/commit/${item.sha}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs font-mono text-tertiary border border-border hover:border-ring hover:text-foreground bg-secondary hover:bg-muted/50 rounded-md px-2.5 py-1 transition-all shrink-0 no-underline mt-0.5"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                              {item.sha.slice(0, 7)}
+                            </a>
+                          </div>
                           <div className="flex items-center gap-2">
                             {item.author && (
-                              <Image 
-                                src={item.author.avatar_url} 
+                              <Image
+                                src={item.author.avatar_url}
                                 alt={item.commit.author.name}
                                 width={20}
                                 height={20}
                                 className="w-5 h-5 rounded-full object-cover border border-border shrink-0"
                               />
                             )}
-                            <span 
-                              onClick={() => item.author && selectUser(item.author.login)}
-                              className={`text-xs text-muted-foreground font-mono ${item.author ? 'hover:text-foreground hover:underline cursor-pointer' : ''}`}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                item.author && selectUser(item.author.login)
+                              }
+                              className={`text-xs text-muted-foreground font-mono bg-transparent border-none p-0 inline-flex items-center ${item.author ? "hover:text-foreground hover:underline cursor-pointer" : ""}`}
                             >
-                              {item.author ? item.author.login : item.commit.author.name}
+                              {item.author
+                                ? item.author.login
+                                : item.commit.author.name}
+                            </button>
+                            <span className="text-[10px] text-tertiary font-mono">
+                              |
                             </span>
-                            <span className="text-[10px] text-tertiary font-mono">|</span>
                             <span className="text-[10px] text-tertiary font-mono">
                               {commitDate}
-                            </span>
-                            <span className="text-[10px] font-mono text-tertiary truncate ml-auto max-w-[80px] sm:max-w-none">
-                              {item.sha.slice(0, 7)}
                             </span>
                           </div>
                         </div>
@@ -325,7 +408,9 @@ export const ViewRepo = () => {
                   })}
                 </div>
               ) : (
-                <div className="text-tertiary text-sm py-6 text-center">No commits found.</div>
+                <div className="text-tertiary text-sm py-6 text-center">
+                  No commits found.
+                </div>
               )}
             </CardContent>
           </Card>
@@ -335,19 +420,22 @@ export const ViewRepo = () => {
         <TabsContent value="contributors">
           <Card className="glass-card border-border">
             <CardHeader>
-              <CardTitle className="text-sm font-semibold tracking-wide text-foreground">Top Contributors</CardTitle>
+              <CardTitle className="text-sm font-semibold tracking-wide text-foreground">
+                Top Contributors
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-6 pt-0">
               {activeRepoContributors.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                   {activeRepoContributors.map((c) => (
-                    <div 
+                    <button
+                      type="button"
                       key={c.id}
                       onClick={() => selectUser(c.login)}
-                      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-secondary hover:bg-muted/40 hover:border-border transition-all duration-200 cursor-pointer group"
+                      className="flex items-center gap-3 p-3 rounded-xl border border-border bg-secondary hover:bg-muted/40 hover:border-border transition-all duration-200 cursor-pointer text-left w-full group"
                     >
-                      <Image 
-                        src={c.avatar_url} 
+                      <Image
+                        src={c.avatar_url}
                         alt={c.login}
                         width={40}
                         height={40}
@@ -358,14 +446,17 @@ export const ViewRepo = () => {
                           {c.login}
                         </h4>
                         <span className="text-[10px] text-tertiary block mt-0.5">
-                          {c.contributions} {c.contributions === 1 ? 'commit' : 'commits'}
+                          {c.contributions}{" "}
+                          {c.contributions === 1 ? "commit" : "commits"}
                         </span>
                       </div>
-                    </div>
+                    </button>
                   ))}
                 </div>
               ) : (
-                <div className="text-tertiary text-sm py-6 text-center">No contributors found.</div>
+                <div className="text-tertiary text-sm py-6 text-center">
+                  No contributors found.
+                </div>
               )}
             </CardContent>
           </Card>
@@ -375,7 +466,9 @@ export const ViewRepo = () => {
         <TabsContent value="languages">
           <Card className="glass-card border-border">
             <CardHeader>
-              <CardTitle className="text-sm font-semibold tracking-wide text-foreground">Language Composition</CardTitle>
+              <CardTitle className="text-sm font-semibold tracking-wide text-foreground">
+                Language Composition
+              </CardTitle>
             </CardHeader>
             <CardContent className="p-6 pt-0 space-y-6">
               {languageData.length > 0 ? (
@@ -385,9 +478,10 @@ export const ViewRepo = () => {
                     {languageData.map((item) => (
                       <div
                         key={item.name}
-                        style={{ 
+                        style={{
                           width: `${item.percentage}%`,
-                          backgroundColor: LANGUAGE_COLORS[item.name] || DEFAULT_COLOR
+                          backgroundColor:
+                            LANGUAGE_COLORS[item.name] || DEFAULT_COLOR,
                         }}
                         className="h-full shrink-0 first:rounded-l-full last:rounded-r-full hover:brightness-110 transition-all"
                         title={`${item.name}: ${item.percentage.toFixed(1)}%`}
@@ -400,10 +494,18 @@ export const ViewRepo = () => {
                     {languageData.map((item) => {
                       const color = LANGUAGE_COLORS[item.name] || DEFAULT_COLOR;
                       return (
-                        <div key={item.name} className="flex items-center justify-between p-3 rounded-lg border border-border bg-card/80">
+                        <div
+                          key={item.name}
+                          className="flex items-center justify-between p-3 rounded-lg border border-border bg-card/80"
+                        >
                           <div className="flex items-center gap-2">
-                            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
-                            <span className="text-xs font-semibold text-foreground">{item.name}</span>
+                            <span
+                              className="w-3 h-3 rounded-full"
+                              style={{ backgroundColor: color }}
+                            />
+                            <span className="text-xs font-semibold text-foreground">
+                              {item.name}
+                            </span>
                           </div>
                           <div className="text-right">
                             <span className="text-xs font-mono font-medium text-foreground">
@@ -419,7 +521,9 @@ export const ViewRepo = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-tertiary text-sm py-6 text-center">No languages detected.</div>
+                <div className="text-tertiary text-sm py-6 text-center">
+                  No languages detected.
+                </div>
               )}
             </CardContent>
           </Card>
